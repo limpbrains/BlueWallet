@@ -364,6 +364,10 @@ module.exports.multiGetTransactionByTxid = async function(txids, batchsize, verb
             if (txhashHeightCache[txid]) {
               // got blockheight where this tx was confirmed
               tx.confirmations = this.estimateCurrentBlockheight() - txhashHeightCache[txid];
+              if (tx.confirmations < 0) {
+                // ugly fix for when estimator lags behind
+                tx.confirmations = 1;
+              }
               tx.time = this.calculateBlockTime(txhashHeightCache[txid]);
               tx.blocktime = this.calculateBlockTime(txhashHeightCache[txid]);
             }
@@ -462,9 +466,9 @@ module.exports.broadcastV2 = async function(hex) {
 };
 
 module.exports.estimateCurrentBlockheight = function() {
-  const baseTs = 1585837504347; // uS
-  const baseHeight = 624083;
-  return Math.floor(baseHeight + (+new Date() - baseTs) / 1000 / 60 / 10);
+  const baseTs = 1587570465609; // uS
+  const baseHeight = 627179;
+  return Math.floor(baseHeight + (+new Date() - baseTs) / 1000 / 60 / 9.5);
 };
 
 /**

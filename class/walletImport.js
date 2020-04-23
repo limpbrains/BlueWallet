@@ -10,6 +10,7 @@ import {
   LightningCustodianWallet,
   PlaceholderWallet,
   SegwitBech32Wallet,
+  HDLegacyElectrumSeedP2PKHWallet,
 } from '../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 const EV = require('../events');
@@ -17,6 +18,9 @@ const A = require('../analytics');
 /** @type {AppStorage} */
 const BlueApp = require('../BlueApp');
 const loc = require('../loc');
+const bip38 = require('../blue_modules/bip38');
+const wif = require('wif');
+const prompt = require('../prompt');
 
 export default class WalletImport {
   /**
@@ -88,10 +92,13 @@ export default class WalletImport {
     }
     const placeholderWallet = WalletImport.addPlaceholderWallet(importText);
     // Plan:
+    // -2. check if BIP38 encrypted
+    // -1. check lightning custodian
     // 0. check if its HDSegwitBech32Wallet (BIP84)
     // 1. check if its HDSegwitP2SHWallet (BIP49)
     // 2. check if its HDLegacyP2PKHWallet (BIP44)
     // 3. check if its HDLegacyBreadwalletWallet (no BIP, just "m/0")
+    // 3.1 check HD Electrum legacy
     // 4. check if its Segwit WIF (P2SH)
     // 5. check if its Legacy WIF
     // 6. check if its address (watch-only wallet)
@@ -99,6 +106,21 @@ export default class WalletImport {
     // 7. check if its private key (legacy address) TODO
 
     try {
+      if (importText.startsWith('6P')) {
+        let password = false;
+        do {
+          password = await prompt('This looks like password-protected private key (BIP38)', 'Enter password to decrypt', false);
+        } while (!password);
+
+        let decryptedKey = await bip38.decrypt(importText, password, status => {
+          console.warn(status.percent + '%');
+        });
+
+        if (decryptedKey) {
+          importText = wif.encode(0x80, decryptedKey.privateKey, decryptedKey.compressed);
+        }
+      }
+
       // is it lightning custodian?
       if (importText.indexOf('blitzhub://') !== -1 || importText.indexOf('lndhub://') !== -1) {
         let lnd = new LightningCustodianWallet();
@@ -180,6 +202,13 @@ export default class WalletImport {
           // await hd1.fetchTransactions(); // experiment: dont fetch tx now. it will import faster. user can refresh his wallet later
           return WalletImport._saveWallet(hd1);
         }
+      }
+
+      let hdElectrumSeedLegacy = new HDLegacyElectrumSeedP2PKHWallet();
+      hdElectrumSeedLegacy.setSecret(importText);
+      if (await hdElectrumSeedLegacy.wasEverUsed()) {
+        // not fetching txs or balances, fuck it, yolo, life is too short
+        return WalletImport._saveWallet(hdElectrumSeedLegacy);
       }
 
       let hd2 = new HDSegwitP2SHWallet();
