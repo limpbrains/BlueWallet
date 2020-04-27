@@ -1,6 +1,6 @@
 /* global alert */
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Dimensions, View, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Platform, Dimensions, View, Keyboard } from 'react-native';
 import {
   BlueFormMultiInput,
   BlueButtonLink,
@@ -62,7 +62,7 @@ const WalletsImport = () => {
 
   return (
     <SafeBlueArea forceInset={{ horizontal: 'always' }} style={{ flex: 1, paddingTop: 40 }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ScrollView>
         <KeyboardAvoidingView behavior="position" enabled>
           <BlueFormLabel>{loc.wallets.import.explanation}</BlueFormLabel>
           <BlueSpacing20 />
@@ -101,29 +101,25 @@ const WalletsImport = () => {
             ),
           })}
         </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-
-      <BlueSpacing20 />
-      <View
-        style={{
-          alignItems: 'center',
-        }}
-      >
-        <BlueButton
-          disabled={importText.trim().length === 0}
-          title={loc.wallets.import.do_import}
-          buttonStyle={{
-            width: width / 1.5,
-          }}
-          onPress={importButtonPressed}
-        />
-        <BlueButtonLink
-          title={loc.wallets.import.scan_qr}
-          onPress={() => {
-            navigate('ScanQRCode', { launchedBy: 'ImportWallet', onBarScanned, showFileImportButton: true });
-          }}
-        />
-      </View>
+        <BlueSpacing20 />
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <BlueButton
+            disabled={importText.trim().length === 0}
+            title={loc.wallets.import.do_import}
+            buttonStyle={{
+              width: width / 1.5,
+            }}
+            onPress={importButtonPressed}
+          />
+          <BlueSpacing20 />
+          <BlueButtonLink
+            title={loc.wallets.import.scan_qr}
+            onPress={() => {
+              navigate('ScanQRCode', { launchedBy: 'ImportWallet', onBarScanned, showFileImportButton: true });
+            }}
+          />
+        </View>
+      </ScrollView>
     </SafeBlueArea>
   );
 };
