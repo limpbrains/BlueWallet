@@ -5,6 +5,7 @@ import RNFS from 'react-native-fs';
 import url from 'url';
 import { Chain } from '../models/bitcoinUnits';
 const bitcoin = require('bitcoinjs-lib');
+const bip21 = require('bip21');
 const BlueApp: AppStorage = require('../BlueApp');
 
 class DeeplinkSchemaMatch {
@@ -24,8 +25,9 @@ class DeeplinkSchemaMatch {
    * Examines the content of the event parameter.
    * If the content is recognizable, create a dictionary with the respective
    * navigation dictionary required by react-navigation
-   * @param {Object} event
-   * @param {void} completionHandler
+   *
+   * @param event {{url: string}} URL deeplink as passed to app, e.g. `bitcoin:bc1qh6tf004ty7z7un2v5ntu4mkf630545gvhs45u7?amount=666&label=Yo`
+   * @param completionHandler {function} Returns {routeName: string, params: object}
    */
   static navigationRouteFor(event, completionHandler) {
     if (event.url === null) {
@@ -34,6 +36,11 @@ class DeeplinkSchemaMatch {
     if (typeof event.url !== 'string') {
       return;
     }
+
+    if (event.url.toLowerCase().startsWith('bluewallet:bitcoin:') || event.url.toLowerCase().startsWith('bluewallet:lightning:')) {
+      event.url = event.url.substring(11);
+    }
+
     if (DeeplinkSchemaMatch.isPossiblyPSBTFile(event.url)) {
       RNFS.readFile(event.url)
         .then(file => {
@@ -194,6 +201,7 @@ class DeeplinkSchemaMatch {
   static isBitcoinAddress(address) {
     address = address
       .replace('bitcoin:', '')
+      .replace('BITCOIN:', '')
       .replace('bitcoin=', '')
       .split('?')[0];
     let isValidBitcoinAddress = false;
@@ -228,14 +236,14 @@ class DeeplinkSchemaMatch {
   }
 
   static isBothBitcoinAndLightning(url) {
-    if (url.includes('lightning') && url.includes('bitcoin')) {
-      const txInfo = url.split(/(bitcoin:|lightning:|lightning=|bitcoin=)+/);
+    if (url.includes('lightning') && (url.includes('bitcoin') || url.includes('BITCOIN'))) {
+      const txInfo = url.split(/(bitcoin:|BITCOIN:|lightning:|lightning=|bitcoin=)+/);
       let bitcoin;
       let lndInvoice;
       for (const [index, value] of txInfo.entries()) {
         try {
           // Inside try-catch. We dont wan't to  crash in case of an out-of-bounds error.
-          if (value.startsWith('bitcoin')) {
+          if (value.startsWith('bitcoin') || value.startsWith('BITCOIN')) {
             bitcoin = `bitcoin:${txInfo[index + 1]}`;
             if (!DeeplinkSchemaMatch.isBitcoinAddress(bitcoin)) {
               bitcoin = false;
@@ -260,6 +268,14 @@ class DeeplinkSchemaMatch {
       }
     }
     return undefined;
+  }
+
+  static bip21decode(uri) {
+    return bip21.decode(uri.replace('BITCOIN:', 'bitcoin:'));
+  }
+
+  static bip21encode() {
+    return bip21.encode.apply(bip21, arguments);
   }
 }
 

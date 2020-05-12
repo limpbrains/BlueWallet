@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BlueNavigationStyle, BlueLoading } from '../../BlueComponents';
+import { BlueNavigationStyle, BlueLoading, SafeBlueArea } from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
 import { AppStorage, LightningCustodianWallet, WatchOnlyWallet } from '../../class';
@@ -17,6 +17,7 @@ export default class BuyBitcoin extends Component {
   constructor(props) {
     super(props);
     let wallet = props.navigation.state.params.wallet;
+    if (!wallet) console.warn('wallet was not passed to buyBitcoin');
 
     this.state = {
       isLoading: true,
@@ -89,11 +90,13 @@ export default class BuyBitcoin extends Component {
     }
 
     return (
-      <WebView
-        source={{
-          uri,
-        }}
-      />
+      <SafeBlueArea style={{ flex: 1 }}>
+        <WebView
+          source={{
+            uri,
+          }}
+        />
+      </SafeBlueArea>
     );
   }
 }
@@ -103,7 +106,7 @@ BuyBitcoin.propTypes = {
     goBack: PropTypes.func,
     state: PropTypes.shape({
       params: PropTypes.shape({
-        wallet: PropTypes.object,
+        wallet: PropTypes.object.isRequired,
         safelloStateToken: PropTypes.string,
       }),
     }),

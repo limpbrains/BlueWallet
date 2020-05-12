@@ -1,8 +1,7 @@
+import { randomBytes } from './rng';
 import { AbstractWallet } from './abstract-wallet';
 import { HDSegwitBech32Wallet } from './';
-import { NativeModules } from 'react-native';
 const bitcoin = require('bitcoinjs-lib');
-const { RNRandomBytes } = NativeModules;
 const BlueElectrum = require('../BlueElectrum');
 const coinSelectAccumulative = require('coinselect/accumulative');
 const coinSelectSplit = require('coinselect/split');
@@ -44,34 +43,8 @@ export class LegacyWallet extends AbstractWallet {
   }
 
   async generate() {
-    let that = this;
-    return new Promise(function(resolve) {
-      if (typeof RNRandomBytes === 'undefined') {
-        // CLI/CI environment
-        // crypto should be provided globally by test launcher
-        return crypto.randomBytes(32, (err, buf) => { // eslint-disable-line
-          if (err) throw err;
-          that.secret = bitcoin.ECPair.makeRandom({
-            rng: function(length) {
-              return buf;
-            },
-          }).toWIF();
-          resolve();
-        });
-      }
-
-      // RN environment
-      RNRandomBytes.randomBytes(32, (err, bytes) => {
-        if (err) throw new Error(err);
-        that.secret = bitcoin.ECPair.makeRandom({
-          rng: function(length) {
-            let b = Buffer.from(bytes, 'base64');
-            return b;
-          },
-        }).toWIF();
-        resolve();
-      });
-    });
+    const buf = await randomBytes(32);
+    this.secret = bitcoin.ECPair.makeRandom({ rng: () => buf }).toWIF();
   }
 
   /**
@@ -245,13 +218,17 @@ export class LegacyWallet extends AbstractWallet {
     return hd.getTransactions.apply(this);
   }
 
+  /**
+   * Broadcast txhex. Can throw an exception if failed
+   *
+   * @param {String} txhex
+   * @returns {Promise<boolean>}
+   */
   async broadcastTx(txhex) {
-    try {
-      const broadcast = await BlueElectrum.broadcast(txhex);
-      return broadcast;
-    } catch (error) {
-      return error;
-    }
+    let broadcast = await BlueElectrum.broadcastV2(txhex);
+    console.log({ broadcast });
+    if (broadcast.indexOf('successfully') !== -1) return true;
+    return broadcast.length === 64; // this means return string is txid (precise length), so it was broadcasted ok
   }
 
   /**

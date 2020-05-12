@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  FlatList,
-  InteractionManager,
-  RefreshControl,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { View, StatusBar, TouchableOpacity, Text, StyleSheet, InteractionManager, RefreshControl, ScrollView, Alert } from 'react-native';
 import { BlueLoading, SafeBlueArea, WalletsCarousel, BlueList, BlueHeaderDefaultMain, BlueTransactionListItem } from '../../BlueComponents';
 import { Icon } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
@@ -20,7 +9,7 @@ import { PlaceholderWallet } from '../../class';
 import WalletImport from '../../class/walletImport';
 import ViewPager from '@react-native-community/viewpager';
 import ScanQRCode from '../send/ScanQRCode';
-import DeeplinkSchemaMatch from '../../class/deeplinkSchemaMatch';
+import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -276,7 +265,7 @@ export default class WalletsList extends Component {
       <View>
         <Text
           style={{
-            paddingLeft: 15,
+            paddingLeft: 16,
             fontWeight: 'bold',
             fontSize: 24,
             marginVertical: 8,
@@ -330,6 +319,36 @@ export default class WalletsList extends Component {
         </TouchableOpacity>
       </View>
     );
+  };
+
+  renderLocalTrader = () => {
+    if (BlueApp.getWallets().length > 0 && !BlueApp.getWallets().some(wallet => wallet.type === PlaceholderWallet.type)) {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('HodlHodl', { fromWallet: this.state.wallet });
+          }}
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginHorizontal: 16,
+            marginVertical: 16,
+            backgroundColor: '#eef0f4',
+            padding: 16,
+            borderRadius: 6,
+          }}
+        >
+          <View style={{ flexDirection: 'column' }}>
+            <Text style={{ fontSize: 16, fontWeight: '600', color: '#0C2550' }}>Local Trader</Text>
+            <Text style={{ fontSize: 13, fontWeight: '500', color: '#9AA0AA' }}>A p2p exchange</Text>
+          </View>
+          <View style={{ flexDirection: 'column', backgroundColor: '#007AFF', borderRadius: 16 }}>
+            <Text style={{ paddingHorizontal: 16, paddingVertical: 8, fontSize: 13, color: '#fff', fontWeight: '600' }}>New</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
   };
 
   render() {
@@ -390,37 +409,37 @@ export default class WalletsList extends Component {
                     }}
                     ref={c => (this.walletsCarousel = c)}
                   />
-                  <BlueList>
-                    <FlatList
-                      ListHeaderComponent={this.renderListHeaderComponent}
-                      ListEmptyComponent={
-                        <View style={{ top: 50, height: 100 }}>
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              color: '#9aa0aa',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {loc.wallets.list.empty_txs1}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 18,
-                              color: '#9aa0aa',
-                              textAlign: 'center',
-                            }}
-                          >
-                            {loc.wallets.list.empty_txs2}
-                          </Text>
-                        </View>
-                      }
-                      data={this.state.dataSource}
-                      extraData={this.state.dataSource}
-                      keyExtractor={this._keyExtractor}
-                      renderItem={this._renderItem}
-                    />
-                  </BlueList>
+                  {this.renderLocalTrader()}
+                  <BlueList
+                    ListHeaderComponent={this.renderListHeaderComponent}
+                    ListEmptyComponent={
+                      <View style={{ top: 80, height: 160 }}>
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            color: '#9aa0aa',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {loc.wallets.list.empty_txs1}
+                        </Text>
+                        <Text
+                          style={{
+                            fontSize: 18,
+                            color: '#9aa0aa',
+                            textAlign: 'center',
+                            fontWeight: '600',
+                          }}
+                        >
+                          {loc.wallets.list.empty_txs2}
+                        </Text>
+                      </View>
+                    }
+                    data={this.state.dataSource}
+                    extraData={this.state.dataSource}
+                    keyExtractor={this._keyExtractor}
+                    renderItem={this._renderItem}
+                  />
                 </ScrollView>
               </View>
             </ViewPager>
