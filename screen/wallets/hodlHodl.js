@@ -14,12 +14,17 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
-import { BlueNavigationStyle, BlueLoading, BlueCard, SafeBlueArea } from '../../BlueComponents';
+import { BlueNavigationStyle, BlueLoading, BlueCard, SafeBlueArea, BlueButtonLink, BlueButton } from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import { HodlHodlApi } from '../../class/hodl-hodl-api';
 import Modal from 'react-native-modal';
 import { Icon } from 'react-native-elements';
+import { AppStorage } from '../../class';
+import NavigationService from '../../NavigationService';
+let BlueApp: AppStorage = require('../../BlueApp');
+const prompt = require('../../prompt');
 const A = require('../../analytics');
 
 const CURRENCY_CODE_ANY = '_any';
@@ -155,21 +160,39 @@ const styles = StyleSheet.create({
   },
 });
 
-const HodlApi = new HodlHodlApi();
-
 export default class HodlHodl extends Component {
   static navigationOptions = ({ navigation }) => ({
     ...BlueNavigationStyle(),
     title: '',
   });
 
+  handleLoginPress() {
+    const handleLoginCallback = hodlApiKey => {
+      BlueApp.setHodlHodlApiKey(hodlApiKey);
+      const displayLoginButton = !hodlApiKey;
+      const HodlApi = new HodlHodlApi(hodlApiKey);
+      this.setState({ HodlApi, displayLoginButton, hodlApiKey });
+    };
+    NavigationService.navigate('HodlHodlLogin', {
+      cb: handleLoginCallback,
+    });
+  }
+
+  handleMyContractsPress() {
+    NavigationService.navigate('HodlHodlMyContracts');
+  }
+
   constructor(props) {
     super(props);
+    this.handleLoginPress = this.handleLoginPress.bind(this);
     /**  @type {AbstractWallet}   */
     let wallet = props.navigation.state.params.wallet;
 
     this.state = {
+      HodlApi: false,
       isLoading: true,
+      displayLoginButton: false,
+      isRenderOfferVisible: false,
       isChooseSideModalVisible: false,
       isChooseCountryModalVisible: false,
       isFiltersModalVisible: false,
@@ -217,7 +240,7 @@ export default class HodlHodl extends Component {
       [HodlHodlApi.SORT_BY]: HodlHodlApi.SORT_BY_VALUE_PRICE,
       [HodlHodlApi.SORT_DIRECTION]: HodlHodlApi.SORT_DIRECTION_VALUE_ASC,
     };
-    const offers = await HodlApi.getOffers(pagination, filters, sort);
+    const offers = await this.state.HodlApi.getOffers(pagination, filters, sort);
 
     this.setState({
       offers,
@@ -225,7 +248,7 @@ export default class HodlHodl extends Component {
   }
 
   async fetchMyCountry() {
-    let myCountryCode = await HodlApi.getMyCountryCode();
+    let myCountryCode = await this.state.HodlApi.getMyCountryCode();
     this.setState({
       myCountryCode,
       country: myCountryCode, // we start with orders from current country
@@ -238,7 +261,7 @@ export default class HodlHodl extends Component {
    * @returns {Promise<void>}
    **/
   async fetchListOfCountries() {
-    let countries = await HodlApi.getCountries();
+    let countries = await this.state.HodlApi.getCountries();
     this.setState({ countries });
   }
 
@@ -248,7 +271,7 @@ export default class HodlHodl extends Component {
    * @returns {Promise<void>}
    **/
   async fetchListOfCurrencies() {
-    let currencies = await HodlApi.getCurrencies();
+    let currencies = await this.state.HodlApi.getCurrencies();
     this.setState({ currencies });
   }
 
@@ -258,13 +281,19 @@ export default class HodlHodl extends Component {
    * @returns {Promise<void>}
    **/
   async fetchListOfMethods() {
-    let methods = await HodlApi.getPaymentMethods(this.state.country || HodlHodlApi.FILTERS_COUNTRY_VALUE_GLOBAL);
+    let methods = await this.state.HodlApi.getPaymentMethods(this.state.country || HodlHodlApi.FILTERS_COUNTRY_VALUE_GLOBAL);
     this.setState({ methods });
   }
 
   async componentDidMount() {
     console.log('wallets/hodlHodl - componentDidMount');
     A(A.ENUM.NAVIGATED_TO_WALLETS_HODLHODL);
+
+    const hodlApiKey = await BlueApp.getHodlHodlApiKey();
+    const displayLoginButton = !hodlApiKey;
+
+    const HodlApi = new HodlHodlApi(hodlApiKey);
+    this.setState({ HodlApi, displayLoginButton, hodlApiKey });
 
     try {
       await this.fetchMyCountry();
@@ -298,7 +327,13 @@ export default class HodlHodl extends Component {
   }
 
   _onPress(item) {
-    Linking.openURL('https://hodlhodl.com/offers/' + item.id);
+    const offers = this.state.offers.filter(value => value.id === item.id);
+    if (offers && offers[0]) {
+      console.warn(offers[0]);
+      this.setState({ isRenderOfferVisible: true, offerToDisplay: offers[0] });
+    } else {
+      Linking.openURL('https://hodlhodl.com/offers/' + item.id);
+    }
   }
 
   _onCountryPress(item) {
@@ -366,6 +401,39 @@ export default class HodlHodl extends Component {
         });
       },
     );
+  }
+
+  async _onAcceptOfferPress(offer) {
+    let btcVolume = await prompt('How much BTC do you want to buy?', 'For example 0.005', true, 'numeric');
+    console.warn({ btcVolume });
+    if (!btcVolume) return;
+
+    let buttons = [];
+    for (const paym of offer.payment_method_instructions) {
+      buttons.push({
+        text: paym.payment_method_name + ' (' + paym.payment_method_type + ')',
+        onPress: async a => {
+          console.warn('!!!', paym.id, paym.version);
+          let noError = true;
+          let contract;
+          try {
+            contract = await this.state.HodlApi.acceptOffer(offer.id, offer.version, paym.id, paym.version, btcVolume);
+            console.warn({ contract });
+          } catch (Error) {
+            noError = false;
+            alert(Error);
+          }
+
+          if (noError && contract.id) {
+            this.setState({ isRenderOfferVisible: false }, async () => {
+              await BlueApp.addHodlHodlContract(contract.id);
+              NavigationService.navigate('HodlHodlMyContracts');
+            });
+          }
+        },
+      });
+    }
+    Alert.alert('Choose payment method', ``, buttons, { cancelable: true });
   }
 
   getItemText(item) {
@@ -786,9 +854,59 @@ export default class HodlHodl extends Component {
     );
   };
 
+  renderOffer = () => {
+    if (!this.state.offerToDisplay) return;
+
+    return (
+      <Modal
+        isVisible={this.state.isRenderOfferVisible}
+        style={styles.bottomModal}
+        onBackdropPress={() => {
+          Keyboard.dismiss();
+          this.setState({ isRenderOfferVisible: false });
+        }}
+      >
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : null}>
+          <View style={styles.modalContent}>
+            <Text>{this.state.offerToDisplay.title}</Text>
+            <Text>
+              {this.state.offerToDisplay.price} {this.state.offerToDisplay.currency_code}
+            </Text>
+            <Text>
+              Min/max: {this.state.offerToDisplay.min_amount}-{this.state.offerToDisplay.max_amount}{' '}
+              {this.state.offerToDisplay.currency_code}
+            </Text>
+            <Text>{this.state.offerToDisplay.description}</Text>
+
+            {this.state.hodlApiKey && this.state.offerToDisplay.side === 'sell' && (
+              <BlueButton
+                title="Accept offer"
+                onPress={async () => {
+                  await this._onAcceptOfferPress(this.state.offerToDisplay);
+                }}
+              />
+            )}
+
+            <BlueButtonLink
+              title="View offer"
+              onPress={async () => {
+                Linking.openURL('https://hodlhodl.com/offers/' + this.state.offerToDisplay.id);
+              }}
+            />
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
+    );
+  };
+
   render() {
     return (
       <SafeBlueArea>
+        {(this.state.displayLoginButton && (
+          <BlueButtonLink title="Login" onPress={this.handleLoginPress} style={{ position: 'absolute', top: 0, right: 10 }} />
+        )) || (
+          <BlueButtonLink title="My contracts" onPress={this.handleMyContractsPress} style={{ position: 'absolute', top: 0, right: 10 }} />
+        )}
         <BlueCard style={{ alignItems: 'center', flex: 1 }}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.BottomLine}>Powered by HodlHodl®</Text>
@@ -903,6 +1021,8 @@ export default class HodlHodl extends Component {
         {this.renderChooseCurrencyModal()}
 
         {this.renderChooseMethodModal()}
+
+        {this.renderOffer()}
       </SafeBlueArea>
     );
   }
@@ -910,6 +1030,7 @@ export default class HodlHodl extends Component {
 
 HodlHodl.propTypes = {
   navigation: PropTypes.shape({
+    navigate: PropTypes.func,
     goBack: PropTypes.func,
     state: PropTypes.shape({
       params: PropTypes.shape({
