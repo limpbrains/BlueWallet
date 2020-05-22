@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { View, StatusBar, TouchableOpacity, Text, StyleSheet, InteractionManager, RefreshControl, ScrollView, Alert } from 'react-native';
-import { BlueLoading, SafeBlueArea, WalletsCarousel, BlueList, BlueHeaderDefaultMain, BlueTransactionListItem } from '../../BlueComponents';
+import { View, TouchableOpacity, Text, StyleSheet, InteractionManager, RefreshControl, SectionList, Alert, Platform } from 'react-native';
+import { BlueScanButton, WalletsCarousel, BlueHeaderDefaultMain, BlueTransactionListItem } from '../../BlueComponents';
 import { Icon } from 'react-native-elements';
 import { NavigationEvents } from 'react-navigation';
+import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import PropTypes from 'prop-types';
 import { PlaceholderWallet } from '../../class';
 import WalletImport from '../../class/walletImport';
-import ViewPager from '@react-native-community/viewpager';
-import ScanQRCode from '../send/ScanQRCode';
-import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 let EV = require('../../events');
 let A = require('../../analytics');
 /** @type {AppStorage} */
@@ -17,9 +15,10 @@ let BlueApp = require('../../BlueApp');
 let loc = require('../../loc');
 let BlueElectrum = require('../../BlueElectrum');
 
+const WalletsListSections = { CAROUSEL: 'CAROUSEL', LOCALTRADER: 'LOCALTRADER', TRANSACTIONS: 'TRANSACTIONS' };
+
 export default class WalletsList extends Component {
   walletsCarousel = React.createRef();
-  viewPagerRef = React.createRef();
 
   constructor(props) {
     super(props);
@@ -29,8 +28,7 @@ export default class WalletsList extends Component {
       wallets: BlueApp.getWallets().concat(false),
       lastSnappedTo: 0,
       timeElpased: 0,
-      cameraPreviewIsPaused: true,
-      viewPagerIndex: 1,
+      dataSource: [],
     };
     EV(EV.enum.WALLETS_COUNT_CHANGED, () => this.redrawScreen(true));
 
@@ -40,11 +38,9 @@ export default class WalletsList extends Component {
   }
 
   componentDidMount() {
-    this.redrawScreen();
     // the idea is that upon wallet launch we will refresh
     // all balances and all transactions here:
     InteractionManager.runAfterInteractions(async () => {
-      let noErr = true;
       try {
         await BlueElectrum.waitTillConnected();
         let balanceStart = +new Date();
@@ -56,14 +52,13 @@ export default class WalletsList extends Component {
         let end = +new Date();
         console.log('fetch all wallet txs took', (end - start) / 1000, 'sec');
       } catch (error) {
-        noErr = false;
         console.log(error);
       }
-      if (noErr) this.redrawScreen();
     });
     this.interval = setInterval(() => {
       this.setState(prev => ({ timeElapsed: prev.timeElapsed + 1 }));
     }, 60000);
+    this.redrawScreen();
   }
 
   componentWillUnmount() {
@@ -132,7 +127,7 @@ export default class WalletsList extends Component {
       },
       () => {
         if (scrollToEnd) {
-          this.walletsCarousel.snapToItem(this.state.wallets.length - 2);
+          this.walletsCarousel.current.snapToItem(this.state.wallets.length - 2);
         }
       },
     );
@@ -145,7 +140,7 @@ export default class WalletsList extends Component {
     return '';
   }
 
-  handleClick(index) {
+  handleClick = index => {
     console.log('click', index);
     let wallet = BlueApp.wallets[index];
     if (wallet) {
@@ -186,9 +181,9 @@ export default class WalletsList extends Component {
         this.props.navigation.navigate('AddWallet');
       }
     }
-  }
+  };
 
-  onSnapToItem(index) {
+  onSnapToItem = index => {
     console.log('onSnapToItem', index);
     this.lastSnappedTo = index;
     this.setState({ lastSnappedTo: index });
@@ -203,7 +198,7 @@ export default class WalletsList extends Component {
 
     // now, lets try to fetch balance and txs for this wallet in case it has changed
     this.lazyRefreshWallet(index);
-  }
+  };
 
   /**
    * Decides whether wallet with such index shoud be refreshed,
@@ -262,7 +257,7 @@ export default class WalletsList extends Component {
 
   renderListHeaderComponent = () => {
     return (
-      <View>
+      <View style={{ backgroundColor: '#FFFFFF' }}>
         <Text
           style={{
             paddingLeft: 16,
@@ -286,20 +281,7 @@ export default class WalletsList extends Component {
     }
   };
 
-  onPageSelected = e => {
-    const index = e.nativeEvent.position;
-    StatusBar.setBarStyle(index === 1 ? 'dark-content' : 'light-content');
-    this.setState({ cameraPreviewIsPaused: index === 1 || index === undefined, viewPagerIndex: index });
-  };
-
-  onBarScanned = value => {
-    DeeplinkSchemaMatch.navigationRouteFor({ url: value }, completionValue => {
-      ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
-      this.props.navigation.navigate(completionValue);
-    });
-  };
-
-  _renderItem = data => {
+  renderTransactionListsRow = data => {
     return (
       <View style={{ marginHorizontal: 4 }}>
         <BlueTransactionListItem item={data.item} itemPriceUnit={data.item.walletPreferredBalanceUnit} />
@@ -309,7 +291,7 @@ export default class WalletsList extends Component {
 
   renderNavigationHeader = () => {
     return (
-      <View style={{ height: 44, alignItems: 'flex-end', justifyContent: 'center' }}>
+      <View style={styles.headerStyle}>
         <TouchableOpacity
           testID="SettingsButton"
           style={{ marginHorizontal: 16 }}
@@ -348,108 +330,166 @@ export default class WalletsList extends Component {
           </View>
         </TouchableOpacity>
       );
+    } else {
+      return null;
     }
   };
 
-  render() {
-    if (this.state.isLoading) {
-      return <BlueLoading />;
-    }
+  renderWalletsCarousel = () => {
     return (
-      <SafeBlueArea>
-        <View style={{ flex: 1, backgroundColor: '#ffffff' }} testID="WalletsList" accessible>
-          <NavigationEvents
-            onDidFocus={() => {
-              this.redrawScreen();
-              this.setState({ cameraPreviewIsPaused: this.state.viewPagerIndex === 1 || this.viewPagerRef.current.index === undefined });
-            }}
-            onWillBlur={() => this.setState({ cameraPreviewIsPaused: true })}
+      <WalletsCarousel
+        removeClippedSubviews={false}
+        data={this.state.wallets}
+        onPress={this.handleClick}
+        handleLongPress={this.handleLongPress}
+        onSnapToItem={this.onSnapToItem}
+        ref={this.walletsCarousel}
+        testID="WalletsList"
+      />
+    );
+  };
+
+  renderSectionItem = item => {
+    switch (item.section.key) {
+      case WalletsListSections.CAROUSEL:
+        return this.renderWalletsCarousel();
+      case WalletsListSections.LOCALTRADER:
+        return this.renderLocalTrader();
+      case WalletsListSections.TRANSACTIONS:
+        return this.renderTransactionListsRow(item);
+      default:
+        return null;
+    }
+  };
+
+  renderSectionHeader = ({ section }) => {
+    switch (section.key) {
+      case WalletsListSections.CAROUSEL:
+        return (
+          <BlueHeaderDefaultMain
+            leftText={loc.wallets.list.title}
+            onNewWalletPress={
+              !BlueApp.getWallets().some(wallet => wallet.type === PlaceholderWallet.type)
+                ? () => this.props.navigation.navigate('AddWallet')
+                : null
+            }
           />
-          <ScrollView contentContainerStyle={{ flex: 1 }}>
-            <ViewPager
-              style={styles.wrapper}
-              onPageSelected={this.onPageSelected}
-              initialPage={1}
-              ref={this.viewPagerRef}
-              showPageIndicator={false}
-            >
-              <View style={styles.scanQRWrapper}>
-                <ScanQRCode
-                  cameraPreviewIsPaused={this.state.cameraPreviewIsPaused}
-                  onBarScanned={this.onBarScanned}
-                  showCloseButton={false}
-                  initialCameraStatusReady={false}
-                  launchedBy={this.props.navigation.state.routeName}
-                />
-              </View>
-              <View style={styles.walletsListWrapper}>
-                {this.renderNavigationHeader()}
-                <ScrollView
-                  refreshControl={
-                    <RefreshControl onRefresh={() => this.refreshTransactions()} refreshing={!this.state.isFlatListRefreshControlHidden} />
-                  }
-                >
-                  <BlueHeaderDefaultMain
-                    leftText={loc.wallets.list.title}
-                    onNewWalletPress={
-                      !BlueApp.getWallets().some(wallet => wallet.type === PlaceholderWallet.type)
-                        ? () => this.props.navigation.navigate('AddWallet')
-                        : null
-                    }
-                  />
-                  <WalletsCarousel
-                    removeClippedSubviews={false}
-                    data={this.state.wallets}
-                    handleClick={index => {
-                      this.handleClick(index);
-                    }}
-                    handleLongPress={this.handleLongPress}
-                    onSnapToItem={index => {
-                      this.onSnapToItem(index);
-                    }}
-                    ref={c => (this.walletsCarousel = c)}
-                  />
-                  {this.renderLocalTrader()}
-                  <BlueList
-                    ListHeaderComponent={this.renderListHeaderComponent}
-                    ListEmptyComponent={
-                      <View style={{ top: 80, height: 160 }}>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            color: '#9aa0aa',
-                            textAlign: 'center',
-                          }}
-                        >
-                          {loc.wallets.list.empty_txs1}
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            color: '#9aa0aa',
-                            textAlign: 'center',
-                            fontWeight: '600',
-                          }}
-                        >
-                          {loc.wallets.list.empty_txs2}
-                        </Text>
-                      </View>
-                    }
-                    data={this.state.dataSource}
-                    extraData={this.state.dataSource}
-                    keyExtractor={this._keyExtractor}
-                    renderItem={this._renderItem}
-                  />
-                </ScrollView>
-              </View>
-            </ViewPager>
-          </ScrollView>
+        );
+      case WalletsListSections.TRANSACTIONS:
+        return this.renderListHeaderComponent();
+      default:
+        return null;
+    }
+  };
+
+  renderSectionFooter = ({ section }) => {
+    switch (section.key) {
+      case WalletsListSections.TRANSACTIONS:
+        if (this.state.dataSource.length === 0 && !this.state.isLoading) {
+          return (
+            <View style={{ top: 80, height: 160, marginBottom: 80 }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: '#9aa0aa',
+                  textAlign: 'center',
+                }}
+              >
+                {loc.wallets.list.empty_txs1}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 18,
+                  color: '#9aa0aa',
+                  textAlign: 'center',
+                  fontWeight: '600',
+                }}
+              >
+                {loc.wallets.list.empty_txs2}
+              </Text>
+            </View>
+          );
+        } else {
+          return null;
+        }
+      default:
+        return null;
+    }
+  };
+
+  renderScanButton = () => {
+    if (BlueApp.getWallets().length > 0 && !BlueApp.getWallets().some(wallet => wallet.type === PlaceholderWallet.type)) {
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignSelf: 'center',
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            bottom: 30,
+            borderRadius: 30,
+            minHeight: 48,
+            overflow: 'hidden',
+          }}
+        >
+          <BlueScanButton onPress={this.onScanButtonPressed} />
         </View>
-      </SafeBlueArea>
+      );
+    } else {
+      return null;
+    }
+  };
+
+  sectionListKeyExtractor = (item, index) => {
+    return `${item}${index}}`;
+  };
+
+  onScanButtonPressed = () => {
+    this.props.navigation.navigate('ScanQRCode', {
+      launchedBy: this.props.navigation.state.routeName,
+      onBarScanned: this.onBarCodeRead,
+      showFileImportButton: false,
+    });
+  };
+
+  onBarScanned = value => {
+    DeeplinkSchemaMatch.navigationRouteFor({ url: value }, completionValue => {
+      ReactNativeHapticFeedback.trigger('impactLight', { ignoreAndroidSystemSettings: false });
+      this.props.navigation.navigate(completionValue);
+    });
+  };
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <NavigationEvents
+          onDidFocus={() => {
+            this.redrawScreen();
+          }}
+        />
+        <View style={styles.walletsListWrapper}>
+          {this.renderNavigationHeader()}
+          <SectionList
+            refreshControl={
+              <RefreshControl onRefresh={() => this.refreshTransactions()} refreshing={!this.state.isFlatListRefreshControlHidden} />
+            }
+            renderItem={this.renderSectionItem}
+            keyExtractor={this.sectionListKeyExtractor}
+            renderSectionHeader={this.renderSectionHeader}
+            contentInset={{ top: 0, left: 0, bottom: 60, right: 0 }}
+            renderSectionFooter={this.renderSectionFooter}
+            sections={[
+              { key: WalletsListSections.CAROUSEL, data: [WalletsListSections.CAROUSEL] },
+              { key: WalletsListSections.LOCALTRADER, data: [WalletsListSections.LOCALTRADER] },
+              { key: WalletsListSections.TRANSACTIONS, data: this.state.dataSource },
+            ]}
+          />
+          {this.renderScanButton()}
+        </View>
+      </View>
     );
   }
 }
-
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#FFFFFF',
@@ -459,9 +499,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
   },
-  scanQRWrapper: {
-    flex: 1,
-    backgroundColor: '#000000',
+  headerStyle: {
+    ...Platform.select({
+      ios: {
+        marginTop: 44,
+        height: 32,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+      },
+      android: {
+        marginTop: 8,
+        height: 44,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+      },
+    }),
   },
 });
 

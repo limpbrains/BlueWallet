@@ -209,7 +209,7 @@ export default class SendDetails extends Component {
     try {
       const cachedNetworkTransactionFees = JSON.parse(await AsyncStorage.getItem(NetworkTransactionFee.StorageKey));
 
-      if (cachedNetworkTransactionFees && cachedNetworkTransactionFees.hasOwnProperty('halfHourFee')) {
+      if (cachedNetworkTransactionFees && cachedNetworkTransactionFees.hasOwnProperty('mediumFee')) {
         this.setState({
           fee: cachedNetworkTransactionFees.fastestFee,
           networkTransactionFees: cachedNetworkTransactionFees,
@@ -548,7 +548,7 @@ export default class SendDetails extends Component {
                 maxLength={9}
                 editable={!this.state.isLoading}
                 placeholderTextColor="#37c0a1"
-                placeholder={this.state.networkTransactionFees.halfHourFee.toString()}
+                placeholder={this.state.networkTransactionFees.mediumFee.toString()}
                 style={{ fontWeight: '600', color: '#37c0a1', marginBottom: 0, marginRight: 4, textAlign: 'right', fontSize: 36 }}
                 inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
