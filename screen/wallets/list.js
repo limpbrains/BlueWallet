@@ -24,7 +24,7 @@ import ActionSheet from '../ActionSheet';
 import ImagePicker from 'react-native-image-picker';
 const EV = require('../../events');
 const A = require('../../analytics');
-let BlueApp: AppStorage = require('../../BlueApp');
+const BlueApp: AppStorage = require('../../BlueApp');
 const loc = require('../../loc');
 const BlueElectrum = require('../../BlueElectrum');
 const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
@@ -175,13 +175,13 @@ export default class WalletsList extends Component {
     InteractionManager.runAfterInteractions(async () => {
       try {
         await BlueElectrum.waitTillConnected();
-        let balanceStart = +new Date();
+        const balanceStart = +new Date();
         await BlueApp.fetchWalletBalances();
-        let balanceEnd = +new Date();
+        const balanceEnd = +new Date();
         console.log('fetch all wallet balances took', (balanceEnd - balanceStart) / 1000, 'sec');
-        let start = +new Date();
+        const start = +new Date();
         await BlueApp.fetchWalletTransactions();
-        let end = +new Date();
+        const end = +new Date();
         console.log('fetch all wallet txs took', (end - start) / 1000, 'sec');
       } catch (error) {
         console.log(error);
@@ -216,13 +216,13 @@ export default class WalletsList extends Component {
           try {
             await BlueElectrum.ping();
             await BlueElectrum.waitTillConnected();
-            let balanceStart = +new Date();
+            const balanceStart = +new Date();
             await BlueApp.fetchWalletBalances(this.walletsCarousel.current.currentIndex || 0);
-            let balanceEnd = +new Date();
+            const balanceEnd = +new Date();
             console.log('fetch balance took', (balanceEnd - balanceStart) / 1000, 'sec');
-            let start = +new Date();
+            const start = +new Date();
             await BlueApp.fetchWalletTransactions(this.walletsCarousel.current.currentIndex || 0);
-            let end = +new Date();
+            const end = +new Date();
             console.log('fetch tx took', (end - start) / 1000, 'sec');
           } catch (err) {
             noErr = false;
@@ -271,15 +271,15 @@ export default class WalletsList extends Component {
   };
 
   txMemo(hash) {
-    if (BlueApp.tx_metadata[hash] && BlueApp.tx_metadata[hash]['memo']) {
-      return BlueApp.tx_metadata[hash]['memo'];
+    if (BlueApp.tx_metadata[hash] && BlueApp.tx_metadata[hash].memo) {
+      return BlueApp.tx_metadata[hash].memo;
     }
     return '';
   }
 
   handleClick = index => {
     console.log('click', index);
-    let wallet = BlueApp.wallets[index];
+    const wallet = BlueApp.wallets[index];
     if (wallet) {
       if (wallet.type === PlaceholderWallet.type) {
         Alert.alert(
@@ -342,12 +342,12 @@ export default class WalletsList extends Component {
    */
   async lazyRefreshWallet(index) {
     /** @type {Array.<AbstractWallet>} wallets */
-    let wallets = BlueApp.getWallets();
+    const wallets = BlueApp.getWallets();
     if (!wallets[index]) {
       return;
     }
 
-    let oldBalance = wallets[index].getBalance();
+    const oldBalance = wallets[index].getBalance();
     let noErr = true;
     let didRefresh = false;
 
@@ -576,7 +576,7 @@ export default class WalletsList extends Component {
   sendButtonLongPress = async () => {
     const isClipboardEmpty = (await Clipboard.getString()).replace(' ', '').length === 0;
     if (Platform.OS === 'ios') {
-      let options = [loc.send.details.cancel, 'Choose Photo', 'Scan QR Code'];
+      const options = [loc.send.details.cancel, 'Choose Photo', 'Scan QR Code'];
       if (!isClipboardEmpty) {
         options.push('Copy from Clipboard');
       }
@@ -594,7 +594,7 @@ export default class WalletsList extends Component {
         }
       });
     } else if (Platform.OS === 'android') {
-      let buttons = [
+      const buttons = [
         {
           text: loc.send.details.cancel,
           onPress: () => {},

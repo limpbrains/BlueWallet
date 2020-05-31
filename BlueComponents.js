@@ -34,9 +34,9 @@ import { BlurView } from '@react-native-community/blur';
 import showPopupMenu from 'react-native-popup-menu-android';
 import NetworkTransactionFees, { NetworkTransactionFeeType } from './models/networkTransactionFees';
 import Biometric from './class/biometrics';
-let loc = require('./loc/');
+const loc = require('./loc/');
 /** @type {AppStorage} */
-let BlueApp = require('./BlueApp');
+const BlueApp = require('./BlueApp');
 const { height, width } = Dimensions.get('window');
 const aspectRatio = height / width;
 const BigNumber = require('bignumber.js');
@@ -314,7 +314,7 @@ export class BlueWalletNavigationHeader extends Component {
             <BluePrivateBalance />
           ) : (
             <Text
-              testID={'WalletBalance'}
+              testID="WalletBalance"
               numberOfLines={1}
               adjustsFontSizeToFit
               style={{
@@ -1067,7 +1067,7 @@ export class BluePlusIcon extends Component {
           <View style={stylesBlueIcon.ball}>
             <Ionicons
               {...this.props}
-              name={'ios-add'}
+              name="ios-add"
               size={26}
               style={{
                 color: BlueApp.settings.foregroundColor,
@@ -1299,7 +1299,7 @@ export class BlueScanButton extends Component {
 export class BlueSendButtonIcon extends Component {
   render() {
     return (
-      <TouchableOpacity {...this.props} testID={'SendButton'}>
+      <TouchableOpacity {...this.props} testID="SendButton">
         <View
           style={{
             flex: 1,
@@ -1439,8 +1439,8 @@ export const BlueTransactionListItem = ({ item, itemPriceUnit = BitcoinUnit.BTC,
   }, [item, itemPriceUnit, shouldRefresh]);
 
   const txMemo = () => {
-    if (BlueApp.tx_metadata[item.hash] && BlueApp.tx_metadata[item.hash]['memo']) {
-      return BlueApp.tx_metadata[item.hash]['memo'];
+    if (BlueApp.tx_metadata[item.hash] && BlueApp.tx_metadata[item.hash].memo) {
+      return BlueApp.tx_metadata[item.hash].memo;
     }
     return '';
   };
@@ -1625,8 +1625,8 @@ export class BlueListTransactionItem extends Component {
   };
 
   txMemo = () => {
-    if (BlueApp.tx_metadata[this.props.item.hash] && BlueApp.tx_metadata[this.props.item.hash]['memo']) {
-      return BlueApp.tx_metadata[this.props.item.hash]['memo'];
+    if (BlueApp.tx_metadata[this.props.item.hash] && BlueApp.tx_metadata[this.props.item.hash].memo) {
+      return BlueApp.tx_metadata[this.props.item.hash].memo;
     }
     return '';
   };
@@ -1799,21 +1799,21 @@ export class BlueListTransactionItem extends Component {
 }
 
 const WalletCarouselItem = ({ item, index, onPress, handleLongPress }) => {
-  let scaleValue = new Animated.Value(1.0);
+  const scaleValue = new Animated.Value(1.0);
 
   const onPressedIn = () => {
-    let props = { duration: 50 };
+    const props = { duration: 50 };
     if (Platform.OS === 'android') {
-      props['useNativeDriver'] = true;
+      props.useNativeDriver = true;
     }
 
     props.toValue = 0.9;
     Animated.spring(scaleValue, props).start();
   };
   const onPressedOut = () => {
-    let props = { duration: 50 };
+    const props = { duration: 50 };
     if (Platform.OS === 'android') {
-      props['useNativeDriver'] = true;
+      props.useNativeDriver = true;
     }
 
     props.toValue = 1.0;
@@ -2081,7 +2081,7 @@ export class BlueAddressInput extends Component {
         }}
       >
         <TextInput
-          testID={'AddressInput'}
+          testID="AddressInput"
           onChangeText={text => {
             this.props.onChangeText(text);
           }}
@@ -2169,7 +2169,7 @@ export class BlueReplaceFeeSuggestions extends Component {
               onPress={() => this.onFeeSelected(NetworkTransactionFeeType.FAST)}
               containerStyle={{ paddingHorizontal: 0, marginHorizontal: 0 }}
               bottomDivider={false}
-              title={'Fast'}
+              title="Fast"
               rightTitle={`${this.state.networkFees.fastestFee} sat/b`}
               rightTitleStyle={{ fontSize: 13, color: BlueApp.settings.alternativeTextColor }}
               {...(this.state.selectedFeeType === NetworkTransactionFeeType.FAST
@@ -2180,7 +2180,7 @@ export class BlueReplaceFeeSuggestions extends Component {
               onPress={() => this.onFeeSelected(NetworkTransactionFeeType.MEDIUM)}
               containerStyle={{ paddingHorizontal: 0, marginHorizontal: 0 }}
               bottomDivider={false}
-              title={'Medium'}
+              title="Medium"
               rightTitle={`${this.state.networkFees.mediumFee} sat/b`}
               rightTitleStyle={{ fontSize: 13, color: BlueApp.settings.alternativeTextColor }}
               {...(this.state.selectedFeeType === NetworkTransactionFeeType.MEDIUM
@@ -2191,7 +2191,7 @@ export class BlueReplaceFeeSuggestions extends Component {
               onPress={() => this.onFeeSelected(NetworkTransactionFeeType.SLOW)}
               containerStyle={{ paddingHorizontal: 0, marginHorizontal: 0 }}
               bottomDivider={false}
-              title={'Slow'}
+              title="Slow"
               rightTitle={`${this.state.networkFees.slowFee} sat/b`}
               rightTitleStyle={{ fontSize: 13, color: BlueApp.settings.alternativeTextColor }}
               {...(this.state.selectedFeeType === NetworkTransactionFeeType.SLOW
@@ -2216,7 +2216,7 @@ export class BlueReplaceFeeSuggestions extends Component {
             >
               <TextInput
                 onChangeText={this.onCustomFeeTextChange}
-                keyboardType={'numeric'}
+                keyboardType="numeric"
                 value={this.state.customFeeValue}
                 ref={ref => (this.customTextInput = ref)}
                 maxLength={9}
@@ -2281,7 +2281,7 @@ export class BlueBitcoinAmount extends Component {
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: 16, paddingBottom: 2 }}>
             <TextInput
               {...this.props}
-              testID={'BitcoinAmountInput'}
+              testID="BitcoinAmountInput"
               keyboardType="numeric"
               onChangeText={text => {
                 text = text.trim();

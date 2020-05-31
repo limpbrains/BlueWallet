@@ -16,7 +16,7 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
 import QRCode from 'react-native-qrcode-svg';
 /** @type {AppStorage} */
-let BlueApp = require('../../BlueApp');
+const BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 const EV = require('../../events');
 const { width, height } = Dimensions.get('window');
@@ -333,7 +333,7 @@ export default class LNDViewInvoice extends Component {
                 } else {
                   InteractionManager.runAfterInteractions(async () => {
                     this.qrCodeSVG.toDataURL(data => {
-                      let shareImageBase64 = {
+                      const shareImageBase64 = {
                         message: `lightning:${invoice.payment_request}`,
                         url: `data:image/png;base64,${data}`,
                       };

@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import { LightningCustodianWallet } from '../../class/wallets/lightning-custodian-wallet';
 /** @type {AppStorage} */
-let BlueApp = require('../../BlueApp');
-let loc = require('../../loc');
+const BlueApp = require('../../BlueApp');
+const loc = require('../../loc');
 
 const styles = StyleSheet.create({
   root: {
@@ -49,7 +49,7 @@ export default class LightningSettings extends Component {
   }
 
   async componentDidMount() {
-    let URI = await AsyncStorage.getItem(AppStorage.LNDHUB);
+    const URI = await AsyncStorage.getItem(AppStorage.LNDHUB);
 
     this.setState({
       isLoading: false,

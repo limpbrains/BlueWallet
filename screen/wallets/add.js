@@ -31,10 +31,10 @@ import { HDSegwitBech32Wallet, SegwitP2SHWallet, HDSegwitP2SHWallet, LightningCu
 
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
-let EV = require('../../events');
-let A = require('../../analytics');
-let BlueApp: AppStorage = require('../../BlueApp');
-let loc = require('../../loc');
+const EV = require('../../events');
+const A = require('../../analytics');
+const BlueApp: AppStorage = require('../../BlueApp');
+const loc = require('../../loc');
 
 const styles = StyleSheet.create({
   loading: {
@@ -133,7 +133,7 @@ export default class WalletsAdd extends Component {
 
   async componentDidMount() {
     let walletBaseURI = await AsyncStorage.getItem(AppStorage.LNDHUB);
-    let isAdvancedOptionsEnabled = await BlueApp.isAdancedModeEnabled();
+    const isAdvancedOptionsEnabled = await BlueApp.isAdancedModeEnabled();
     walletBaseURI = walletBaseURI || '';
     this.setState({
       isLoading: false,
@@ -271,7 +271,7 @@ export default class WalletsAdd extends Component {
                   );
                 } else if (this.state.activeLightning && this.state.isAdvancedOptionsEnabled) {
                   return (
-                    <React.Fragment>
+                    <>
                       <BlueSpacing20 />
                       <Text style={styles.advancedText}>{loc.settings.advanced_options}</Text>
                       <BlueSpacing20 />
@@ -292,7 +292,7 @@ export default class WalletsAdd extends Component {
                           underlineColorAndroid="transparent"
                         />
                       </View>
-                    </React.Fragment>
+                    </>
                   );
                 } else if (this.state.activeBitcoin === undefined && this.state.isAdvancedOptionsEnabled) {
                   return <View />;
@@ -316,7 +316,7 @@ export default class WalletsAdd extends Component {
                             w.setLabel(this.state.label || loc.wallets.details.title);
 
                             try {
-                              let lndhub =
+                              const lndhub =
                                 this.state.walletBaseURI.trim().length > 0
                                   ? this.state.walletBaseURI
                                   : LightningCustodianWallet.defaultBaseUri;
@@ -408,4 +408,3 @@ WalletsAdd.propTypes = {
     goBack: PropTypes.func,
   }),
 };
-
