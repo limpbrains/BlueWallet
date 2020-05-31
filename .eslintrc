@@ -1,9 +1,18 @@
 {
   "parser": "babel-eslint",
   "plugins": [
-    "react", "prettier", "react-hooks"
+    "react",
+    // "prettier",
+    "react-hooks", // react-hooks still not in standard-react
   ],
-  "extends": ["standard", "standard-react", "prettier", "prettier/react"],
+  "extends": [
+    "standard",
+    "standard-react",
+    // "@react-native-community",
+    "plugin:prettier/recommended",
+    "prettier/react",
+    "prettier/standard",
+  ],
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
