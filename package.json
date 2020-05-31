@@ -37,14 +37,14 @@
     "ios": "react-native run-ios",
     "postinstall": "rn-nodeify --install buffer,events,process,stream,util,inherits,fs,path --hack; npm run releasenotes2json; npm run podinstall; npx jetify",
     "test": "npm run lint && npm run unit && npm run jest",
-    "jest": "node node_modules/jest/bin/jest.js -b -w 1 tests/integration/*",
+    "jest": "jest -b -w 1 tests/integration/*",
     "e2e:release": "detox build -c android.emu.release; npm run e2e:release-no-build",
     "e2e:release-no-build": "detox test -c android.emu.release --record-videos all --take-screenshots all --headless",
     "e2e:debug": "(test -f android/app/build/outputs/apk/debug/app-debug.apk && test -f android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk) || detox build -c android.emu.debug; detox test -c android.emu.debug",
     "lint": "eslint *.js screen/**/*.js bip70/ blue_modules/crypto.js class/**/*.js models/ loc/ tests/**/*.js",
-    "lint:fix": "eslint *.js screen/**/*.js bip70/ blue_modules/crypto.js class/**/*.js models/ loc/ tests/**/*.js --fix",
+    "lint:fix": "npm run lint -- --fix",
     "lint:quickfix": "git status --porcelain | grep -v '\\.json' | grep '\\.js' --color=never |  awk '{print $2}' | xargs eslint --fix; exit 0",
-    "unit": "node node_modules/jest/bin/jest.js tests/unit/*"
+    "unit": "jest tests/unit/*"
   },
   "jest": {
     "preset": "react-native",
