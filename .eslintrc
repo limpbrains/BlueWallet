@@ -1,8 +1,6 @@
 {
   "parser": "babel-eslint",
   "plugins": [
-    "react",
-    // "prettier",
     "react-hooks", // react-hooks still not in standard-react
   ],
   "extends": [
@@ -16,7 +14,7 @@
   "rules": {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
-    "react/jsx-handler-names": "off", // activated by stansard-react config
+    "react/jsx-handler-names": "off", // activated by standard-react config
     "no-prototype-builtins": "off", // acticated by standard
     "prettier/prettier": [
       "warn",
