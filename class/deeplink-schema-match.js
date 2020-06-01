@@ -108,7 +108,7 @@ class DeeplinkSchemaMatch {
         },
       ]);
     } else if (DeeplinkSchemaMatch.isSafelloRedirect(event)) {
-      let urlObject = url.parse(event.url, true) // eslint-disable-line
+      const urlObject = url.parse(event.url, true); // eslint-disable-line node/no-deprecated-api
 
       const safelloStateToken = urlObject.query['safello-state-token'];
 
@@ -128,7 +128,7 @@ class DeeplinkSchemaMatch {
         },
       ]);
     } else {
-      let urlObject = url.parse(event.url, true); // eslint-disable-line
+      const urlObject = url.parse(event.url, true); // eslint-disable-line node/no-deprecated-api
       console.log('parsed', event.url, 'into', urlObject);
       (async () => {
         if (urlObject.protocol === 'bluewallet:' || urlObject.protocol === 'lapp:' || urlObject.protocol === 'blue:') {
@@ -251,7 +251,7 @@ class DeeplinkSchemaMatch {
   }
 
   static isSafelloRedirect(event) {
-    let urlObject = url.parse(event.url, true) // eslint-disable-line
+    const urlObject = url.parse(event.url, true); // eslint-disable-line node/no-deprecated-api
 
     return !!urlObject.query['safello-state-token'];
   }

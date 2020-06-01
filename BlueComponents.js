@@ -91,20 +91,16 @@ export class BitcoinButton extends Component {
       <TouchableOpacity
         testID={this.props.testID}
         onPress={() => {
-          // eslint-disable-next-line
           if (this.props.onPress) this.props.onPress();
         }}
       >
         <View
           style={{
-            // eslint-disable-next-line
             borderColor: BlueApp.settings.hdborderColor,
             borderWidth: 1,
             borderRadius: 5,
             backgroundColor: (this.props.active && BlueApp.settings.hdbackgroundColor) || BlueApp.settings.brandingColor,
-            // eslint-disable-next-line
             minWidth: this.props.style.width,
-            // eslint-disable-next-line
             minHeight: this.props.style.height,
             height: this.props.style.height,
             flex: 1,
@@ -128,20 +124,16 @@ export class LightningButton extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          // eslint-disable-next-line
           if (this.props.onPress) this.props.onPress();
         }}
       >
         <View
           style={{
-            // eslint-disable-next-line
             borderColor: BlueApp.settings.lnborderColor,
             borderWidth: 1,
             borderRadius: 5,
             backgroundColor: (this.props.active && BlueApp.settings.lnbackgroundColor) || BlueApp.settings.brandingColor,
-            // eslint-disable-next-line
             minWidth: this.props.style.width,
-            // eslint-disable-next-line
             minHeight: this.props.style.height,
             height: this.props.style.height,
             flex: 1,
@@ -580,8 +572,6 @@ export class BlueText extends Component {
       <Text
         style={{
           color: BlueApp.settings.foregroundColor,
-
-          // eslint-disable-next-line
           ...this.props.style,
         }}
         {...this.props}
@@ -589,6 +579,7 @@ export class BlueText extends Component {
     );
   }
 }
+
 export class BlueTextCentered extends Component {
   render() {
     return <Text {...this.props} style={{ color: BlueApp.settings.foregroundColor, textAlign: 'center' }} />;
@@ -720,16 +711,12 @@ export class BlueHeaderDefaultSub extends Component {
                 color: BlueApp.settings.foregroundColor,
               }}
             >
-              {
-                // eslint-disable-next-line
-                this.props.leftText
-              }
+              {this.props.leftText}
             </Text>
           }
           rightComponent={
             <TouchableOpacity
               onPress={() => {
-                // eslint-disable-next-line
                 if (this.props.onClose) this.props.onClose();
               }}
             >
@@ -755,7 +742,6 @@ export class BlueHeaderDefaultMain extends Component {
           {...this.props}
           statusBarProps={{ barStyle: 'default' }}
           leftComponent={{
-            // eslint-disable-next-line
             text: this.props.leftText,
             style: {
               fontWeight: 'bold',

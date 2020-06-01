@@ -309,8 +309,6 @@ export default class WalletsAdd extends Component {
                         let w;
 
                         if (this.state.activeLightning) {
-                          // eslint-disable-next-line
-
                           this.createLightningWallet = async () => {
                             w = new LightningCustodianWallet();
                             w.setLabel(this.state.label || loc.wallets.details.title);

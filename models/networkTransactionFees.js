@@ -19,7 +19,8 @@ export class NetworkTransactionFee {
 
 export default class NetworkTransactionFees {
   static recommendedFees() {
-    return new Promise(async (resolve, reject) => { // eslint-disable-line
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
       try {
         const response = await BlueElectrum.estimateFees();
         if (typeof response === 'object') {

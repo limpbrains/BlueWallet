@@ -18,7 +18,8 @@ export class BitcoinBIP70TransactionError {
 
 export default class BitcoinBIP70TransactionDecode {
   static decode(data) {
-    return new Promise(async (resolve, reject) => { // eslint-disable-line
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve, reject) => {
       try {
         let url;
         if (data.match(/bitcoin:\?r=https?:\/\/\S+/gi)) {
