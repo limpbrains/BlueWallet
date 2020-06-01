@@ -51,12 +51,12 @@ export class BlueButton extends Component {
   render() {
     let backgroundColor = this.props.backgroundColor ? this.props.backgroundColor : BlueApp.settings.buttonBackgroundColor;
     let fontColor = BlueApp.settings.buttonTextColor;
-    if (this.props.hasOwnProperty('disabled') && this.props.disabled === true) {
+    if (this.props.disabled === true) {
       backgroundColor = BlueApp.settings.buttonDisabledBackgroundColor;
       fontColor = BlueApp.settings.buttonDisabledTextColor;
     }
     let buttonWidth = this.props.width ? this.props.width : width / 1.5;
-    if (this.props.hasOwnProperty('noMinWidth')) {
+    if ('noMinWidth' in this.props) {
       buttonWidth = 0;
     }
     return (
@@ -1576,7 +1576,7 @@ export const BlueTransactionListItem = ({ item, itemPriceUnit = BitcoinUnit.BTC,
     } else if (item.type === 'user_invoice' || item.type === 'payment_request' || item.type === 'paid_invoice') {
       const lightningWallet = BlueApp.getWallets().filter(wallet => {
         if (typeof wallet === 'object') {
-          if (wallet.hasOwnProperty('secret')) {
+          if ('secret' in wallet) {
             return wallet.getSecret() === item.fromWallet;
           }
         }
@@ -1770,7 +1770,7 @@ export class BlueListTransactionItem extends Component {
     ) {
       const lightningWallet = BlueApp.getWallets().filter(wallet => {
         if (typeof wallet === 'object') {
-          if (wallet.hasOwnProperty('secret')) {
+          if ('secret' in wallet) {
             return wallet.getSecret() === this.props.item.fromWallet;
           }
         }

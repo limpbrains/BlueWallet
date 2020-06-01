@@ -92,7 +92,7 @@ export default class WatchConnectivity {
             let memo = '';
             let amount = 0;
 
-            if (transaction.hasOwnProperty('confirmations') && !(transaction.confirmations > 0)) {
+            if ('confirmations' in transaction && !(transaction.confirmations > 0)) {
               type = 'pendingConfirmation';
             } else if (transaction.type === 'user_invoice' || transaction.type === 'payment_request') {
               const currentDate = new Date();

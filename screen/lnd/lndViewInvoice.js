@@ -130,7 +130,7 @@ export default class LNDViewInvoice extends Component {
       invoice,
       fromWallet,
       isLoading: typeof invoice === 'string',
-      addressText: typeof invoice === 'object' && invoice.hasOwnProperty('payment_request') ? invoice.payment_request : invoice,
+      addressText: typeof invoice === 'object' && 'payment_request' in invoice ? invoice.payment_request : invoice,
       isFetchingInvoices: true,
       qrCodeHeight: height > width ? width - 20 : width / 2,
     };
@@ -313,7 +313,7 @@ export default class LNDViewInvoice extends Component {
             <BlueText>
               {loc.lndViewInvoice.please_pay} {invoice.amt} {loc.lndViewInvoice.sats}
             </BlueText>
-            {invoice && invoice.hasOwnProperty('description') && invoice.description.length > 0 && (
+            {invoice && 'description' in invoice && invoice.description.length > 0 && (
               <BlueText>
                 {loc.lndViewInvoice.for} {invoice.description}
               </BlueText>

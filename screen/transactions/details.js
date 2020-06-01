@@ -121,7 +121,7 @@ export default class TransactionsDetails extends Component {
   }
 
   render() {
-    if (this.state.isLoading || !this.state.hasOwnProperty('tx')) {
+    if (this.state.isLoading || !('tx' in this.state)) {
       return <BlueLoading />;
     }
 
@@ -149,8 +149,8 @@ export default class TransactionsDetails extends Component {
                 }
               }
             })()}
-
-            {this.state.hasOwnProperty('from') && (
+            'from' in{' '}
+            {this.state && (
               <>
                 <View style={styles.rowHeader}>
                   <BlueText style={styles.rowCaption}>{loc.transactions.details.from}</BlueText>
@@ -159,8 +159,8 @@ export default class TransactionsDetails extends Component {
                 <BlueText style={styles.rowValue}>{this.state.from.filter(onlyUnique).join(', ')}</BlueText>
               </>
             )}
-
-            {this.state.hasOwnProperty('to') && (
+            'to' in{' '}
+            {this.state && (
               <>
                 <View style={styles.rowHeader}>
                   <BlueText style={styles.rowCaption}>{loc.transactions.details.to}</BlueText>
@@ -169,15 +169,13 @@ export default class TransactionsDetails extends Component {
                 <BlueText style={styles.rowValue}>{arrDiff(this.state.from, this.state.to.filter(onlyUnique)).join(', ')}</BlueText>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('fee') && (
+            {'fee' in this.state.tx && (
               <>
                 <BlueText style={styles.rowCaption}>{loc.send.create.fee}</BlueText>
                 <BlueText style={styles.rowValue}>{this.state.tx.fee + ' sats'}</BlueText>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('hash') && (
+            {'hash' in this.state.tx && (
               <>
                 <View style={styles.rowHeader}>
                   <BlueText style={styles.txId}>Txid</BlueText>
@@ -198,29 +196,25 @@ export default class TransactionsDetails extends Component {
                 </TouchableOpacity>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('received') && (
+            {'received' in this.state.tx && (
               <>
                 <BlueText style={styles.rowCaption}>Received</BlueText>
                 <BlueText style={styles.rowValue}>{dayjs(this.state.tx.received).format('MM/DD/YYYY h:mm A')}</BlueText>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('block_height') && this.state.tx.block_height > 0 && (
+            {'block_height' in this.state.tx && this.state.tx.block_height > 0 && (
               <>
                 <BlueText style={styles.rowCaption}>Block Height</BlueText>
                 <BlueText style={styles.rowValue}>{this.state.tx.block_height}</BlueText>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('inputs') && (
+            {'inputs' in this.state.tx && (
               <>
                 <BlueText style={styles.rowCaption}>Inputs</BlueText>
                 <BlueText style={styles.rowValue}>{this.state.tx.inputs.length}</BlueText>
               </>
             )}
-
-            {this.state.tx.hasOwnProperty('outputs') && this.state.tx.outputs.length > 0 && (
+            {'outputs' in this.state.tx && this.state.tx.outputs.length > 0 && (
               <>
                 <BlueText style={styles.rowCaption}>Outputs</BlueText>
                 <BlueText style={styles.rowValue}>{this.state.tx.outputs.length}</BlueText>

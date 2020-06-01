@@ -373,7 +373,7 @@ export default class SendDetails extends Component {
     try {
       const cachedNetworkTransactionFees = JSON.parse(await AsyncStorage.getItem(NetworkTransactionFee.StorageKey));
 
-      if (cachedNetworkTransactionFees && cachedNetworkTransactionFees.hasOwnProperty('mediumFee')) {
+      if (cachedNetworkTransactionFees && 'mediumFee' in cachedNetworkTransactionFees) {
         this.setState({
           fee: cachedNetworkTransactionFees.fastestFee,
           networkTransactionFees: cachedNetworkTransactionFees,
@@ -384,7 +384,7 @@ export default class SendDetails extends Component {
 
     try {
       const recommendedFees = await NetworkTransactionFees.recommendedFees();
-      if (recommendedFees && recommendedFees.hasOwnProperty('fastestFee')) {
+      if (recommendedFees && 'fastestFee' in recommendedFees) {
         await AsyncStorage.setItem(NetworkTransactionFee.StorageKey, JSON.stringify(recommendedFees));
         this.setState({
           fee: recommendedFees.fastestFee,
@@ -432,13 +432,13 @@ export default class SendDetails extends Component {
     let memo = '';
     try {
       parsedBitcoinUri = DeeplinkSchemaMatch.bip21decode(uri);
-      address = parsedBitcoinUri.hasOwnProperty('address') ? parsedBitcoinUri.address : address;
-      if (parsedBitcoinUri.hasOwnProperty('options')) {
-        if (parsedBitcoinUri.options.hasOwnProperty('amount')) {
+      address = 'address' in parsedBitcoinUri ? parsedBitcoinUri.address : address;
+      if ('options' in parsedBitcoinUri) {
+        if ('amount' in parsedBitcoinUri.options) {
           amount = parsedBitcoinUri.options.amount.toString();
           amount = parsedBitcoinUri.options.amount;
         }
-        if (parsedBitcoinUri.options.hasOwnProperty('label')) {
+        if ('label' in parsedBitcoinUri.options) {
           memo = parsedBitcoinUri.options.label || memo;
         }
       }

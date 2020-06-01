@@ -244,7 +244,7 @@ export default class TransactionsStatus extends Component {
   }
 
   render() {
-    if (this.state.isLoading || !this.state.hasOwnProperty('tx')) {
+    if (this.state.isLoading || !('tx' in this.state)) {
       return <BlueLoading />;
     }
 
@@ -310,7 +310,7 @@ export default class TransactionsStatus extends Component {
               </View>
             </View>
 
-            {this.state.tx.hasOwnProperty('fee') && (
+            {'fee' in this.state.tx && (
               <View style={styles.fee}>
                 <BlueText style={styles.feeText}>
                   {loc.send.create.fee.toLowerCase()}{' '}

@@ -10,7 +10,6 @@
     "prettier/standard",
   ],
   "rules": {
-    "no-prototype-builtins": "off", // acticated by standard
     "react/jsx-handler-names": "off", // activated by standard-react config
     "prettier/prettier": [
       "warn",

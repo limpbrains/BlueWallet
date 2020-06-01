@@ -208,7 +208,7 @@ export default class ScanLndInvoice extends React.Component {
   };
 
   async pay() {
-    if (!this.state.hasOwnProperty('decoded')) {
+    if ('decoded' in this.state) {
       return null;
     }
 
@@ -364,7 +364,7 @@ export default class ScanLndInvoice extends React.Component {
                 />
                 <View style={styles.description}>
                   <Text numberOfLines={0} style={styles.descriptionText}>
-                    {this.state.hasOwnProperty('decoded') && this.state.decoded !== undefined ? this.state.decoded.description : ''}
+                    {'decoded' in this.state && this.state.decoded !== undefined ? this.state.decoded.description : ''}
                   </Text>
                 </View>
                 {this.state.expiresIn !== undefined && <Text style={styles.expiresIn}>Expires in: {this.state.expiresIn}</Text>}
