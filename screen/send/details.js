@@ -35,7 +35,7 @@ import Modal from 'react-native-modal';
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
 import BitcoinBIP70TransactionDecode from '../../bip70/bip70';
 import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
-import { AppStorage, HDSegwitBech32Wallet, LightningCustodianWallet, WatchOnlyWallet } from '../../class';
+import { HDSegwitBech32Wallet, LightningCustodianWallet, WatchOnlyWallet } from '../../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { BitcoinTransaction } from '../../models/bitcoinTransactionInfo';
 import DocumentPicker from 'react-native-document-picker';
@@ -44,7 +44,7 @@ import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 const bitcoin = require('bitcoinjs-lib');
 const BigNumber = require('bignumber.js');
 const { width } = Dimensions.get('window');
-const BlueApp: AppStorage = require('../../BlueApp');
+const BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 
 const btcAddressRx = /^[a-zA-Z0-9]{26,35}$/;

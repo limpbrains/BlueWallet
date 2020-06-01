@@ -89,7 +89,7 @@ export class AbstractWallet {
     return true;
   }
 
-  allowSendMax(): boolean {
+  allowSendMax() {
     return false;
   }
 

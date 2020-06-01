@@ -12,10 +12,11 @@ import {
   BlueText,
 } from '../../BlueComponents';
 import PropTypes from 'prop-types';
-import { AppStorage } from '../../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Biometric from '../../class/biometrics';
-const BlueApp: AppStorage = require('../../BlueApp');
+
+/** @type {AppStorage} */
+const BlueApp = require('../../BlueApp');
 const prompt = require('../../prompt');
 const loc = require('../../loc');
 

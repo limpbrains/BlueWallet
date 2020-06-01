@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { ScrollView, Platform, TouchableWithoutFeedback, TouchableOpacity, StyleSheet } from 'react-native';
 import { BlueLoading, BlueText, BlueSpacing20, BlueListItem, SafeBlueArea, BlueNavigationStyle, BlueCard } from '../../BlueComponents';
 import PropTypes from 'prop-types';
-import { AppStorage } from '../../class';
 import { useNavigation } from '@react-navigation/native';
 import HandoffSettings from '../../class/handoff';
-const BlueApp: AppStorage = require('../../BlueApp');
+
+const BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 
 const styles = StyleSheet.create({

@@ -4,11 +4,11 @@ import { Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View, Style
 import { Icon } from 'react-native-elements';
 import { BlueButton, BlueCreateTxNavigationStyle, BlueLoading, BlueSpacing, BlueText } from '../../BlueComponents';
 import PropTypes from 'prop-types';
-import { AppStorage, PlaceholderWallet } from '../../class';
+import { PlaceholderWallet } from '../../class';
 import Azteco from '../../class/azteco';
 
 const EV = require('../../events');
-const BlueApp: AppStorage = require('../../BlueApp');
+const BlueApp = require('../../BlueApp');
 
 const styles = StyleSheet.create({
   loading: {

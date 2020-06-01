@@ -5,7 +5,7 @@ import { BlueLoading, BlueButton, SafeBlueArea, BlueCard, BlueText, BlueNavigati
 import PropTypes from 'prop-types';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { AppStorage } from '../class';
-const BlueApp: AppStorage = require('../BlueApp');
+const BlueApp = require('../BlueApp');
 const prompt = require('../prompt');
 const EV = require('../events');
 const loc = require('../loc');

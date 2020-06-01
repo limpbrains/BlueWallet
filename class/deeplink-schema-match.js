@@ -7,7 +7,7 @@ import { Chain } from '../models/bitcoinUnits';
 import Azteco from './azteco';
 const bitcoin = require('bitcoinjs-lib');
 const bip21 = require('bip21');
-const BlueApp: AppStorage = require('../BlueApp');
+const BlueApp = require('../BlueApp');
 
 class DeeplinkSchemaMatch {
   static hasSchema(schemaString) {

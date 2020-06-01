@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 import { BlueNavigationStyle, BlueLoading, SafeBlueArea } from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import { WebView } from 'react-native-webview';
-import { AppStorage, LightningCustodianWallet, WatchOnlyWallet } from '../../class';
+import { LightningCustodianWallet, WatchOnlyWallet } from '../../class';
 const currency = require('../../currency');
-const BlueApp: AppStorage = require('../../BlueApp');
+const BlueApp = require('../../BlueApp');
 const loc = require('../../loc');
 
 const styles = StyleSheet.create({

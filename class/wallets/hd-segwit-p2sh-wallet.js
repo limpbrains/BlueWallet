@@ -17,7 +17,7 @@ export class HDSegwitP2SHWallet extends AbstractHDElectrumWallet {
     return true;
   }
 
-  allowSendMax(): boolean {
+  allowSendMax() {
     return true;
   }
 
