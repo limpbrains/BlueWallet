@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { HDSegwitBech32Transaction, HDSegwitBech32Wallet } from '../../class';
 import CPFP from './CPFP';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
+import BlueApp from '../../BlueApp';
 
 const styles = StyleSheet.create({
   root: {

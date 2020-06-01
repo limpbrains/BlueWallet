@@ -1,6 +1,6 @@
 /* global describe, it */
+import assert from 'assert';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
-const assert = require('assert');
 
 describe('unit - DeepLinkSchemaMatch', function () {
   it('hasSchema', () => {

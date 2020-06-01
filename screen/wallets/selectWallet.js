@@ -8,8 +8,8 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import WalletGradient from '../../class/wallet-gradient';
 import { useRoute } from '@react-navigation/native';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   root: {

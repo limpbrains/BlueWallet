@@ -16,9 +16,9 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Biometric from '../../class/biometrics';
 
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const prompt = require('../../prompt');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import prompt from '../../prompt';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   root: {

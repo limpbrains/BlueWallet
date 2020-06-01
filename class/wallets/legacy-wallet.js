@@ -1,10 +1,10 @@
 import { randomBytes } from '../rng';
 import { AbstractWallet } from './abstract-wallet';
 import { HDSegwitBech32Wallet } from '..';
-const bitcoin = require('bitcoinjs-lib');
-const BlueElectrum = require('../../BlueElectrum');
-const coinSelectAccumulative = require('coinselect/accumulative');
-const coinSelectSplit = require('coinselect/split');
+import * as bitcoin from 'bitcoinjs-lib';
+import BlueElectrum from '../../BlueElectrum';
+import coinSelectAccumulative from 'coinselect/accumulative';
+import coinSelectSplit from 'coinselect/split';
 
 /**
  *  Has private key and single address like "1ABCD....."

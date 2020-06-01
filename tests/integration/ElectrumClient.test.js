@@ -1,9 +1,10 @@
 /* global it, describe, jasmine */
-const bitcoin = require('bitcoinjs-lib');
+import * as bitcoin from 'bitcoinjs-lib';
+import assert from 'assert';
+
 global.net = require('net');
 global.tls = require('tls');
 
-const assert = require('assert');
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 150 * 1000;
 
 const hardcodedPeers = [

@@ -1,5 +1,5 @@
 import Biometrics from 'react-native-biometrics';
-const BlueApp = require('../BlueApp');
+import BlueApp from '../BlueApp';
 
 export default class Biometric {
   static STORAGEKEY = 'Biometrics';

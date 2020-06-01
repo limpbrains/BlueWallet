@@ -25,9 +25,9 @@ import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
 import NavigationService from '../../NavigationService';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
-const BlueApp = require('../../BlueApp');
-const EV = require('../../events');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import EV from '../../events';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   createButton: {

@@ -1,6 +1,7 @@
 /* global it, describe */
+import assert from 'assert';
+
 import { WatchOnlyWallet } from '../../class';
-const assert = require('assert');
 
 describe('Watch only wallet', () => {
   it('can validate address', async () => {

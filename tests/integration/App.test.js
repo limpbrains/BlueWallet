@@ -4,7 +4,8 @@ import TestRenderer from 'react-test-renderer';
 import Settings from '../../screen/settings/settings';
 import Selftest from '../../screen/selftest';
 import { BlueHeader } from '../../BlueComponents';
-const assert = require('assert');
+import assert from 'assert';
+
 jest.mock('react-native-qrcode-svg', () => 'Video');
 jest.useFakeTimers();
 

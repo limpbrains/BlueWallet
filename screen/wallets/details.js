@@ -25,11 +25,11 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Biometric from '../../class/biometrics';
 import { HDSegwitBech32Wallet, SegwitP2SHWallet, LegacyWallet, SegwitBech32Wallet, WatchOnlyWallet } from '../../class';
 import { ScrollView } from 'react-native-gesture-handler';
-const EV = require('../../events');
-const prompt = require('../../prompt');
+import EV from '../../events';
+import prompt from '../../prompt';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   root: {

@@ -3,12 +3,12 @@ import BigNumber from 'bignumber.js';
 import b58 from 'bs58check';
 import { randomBytes } from '../rng';
 import { AbstractHDWallet } from './abstract-hd-wallet';
-const bitcoin = require('bitcoinjs-lib');
-const BlueElectrum = require('../../BlueElectrum');
-const HDNode = require('bip32');
-const coinSelectAccumulative = require('coinselect/accumulative');
-const coinSelectSplit = require('coinselect/split');
-const reverse = require('buffer-reverse');
+import * as bitcoin from 'bitcoinjs-lib';
+import BlueElectrum from '../../BlueElectrum';
+import * as HDNode from 'bip32';
+import coinSelectAccumulative from 'coinselect/accumulative';
+import coinSelectSplit from 'coinselect/split';
+import reverse from 'buffer-reverse';
 
 /**
  * Electrum - means that it utilizes Electrum protocol for blockchain data

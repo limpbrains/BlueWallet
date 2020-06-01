@@ -23,8 +23,8 @@ import HandoffSettings from '../../class/handoff';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
 import Handoff from 'react-native-handoff';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const ReceiveDetails = () => {
   const { secret } = useRoute().params;

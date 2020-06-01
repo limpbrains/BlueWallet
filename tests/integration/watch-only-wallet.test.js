@@ -1,9 +1,10 @@
 /* global it, describe, jasmine, afterAll, beforeAll  */
+import assert from 'assert';
 import { WatchOnlyWallet } from '../../class';
-const assert = require('assert');
+import BlueElectrum from '../../BlueElectrum'; // so it connects ASAP
+
 global.net = require('net'); // needed by Electrum client. For RN it is proviced in shim.js
 global.tls = require('tls'); // needed by Electrum client. For RN it is proviced in shim.js
-const BlueElectrum = require('../../BlueElectrum'); // so it connects ASAP
 
 afterAll(async () => {
   // after all tests we close socket so the test suite can actually terminate

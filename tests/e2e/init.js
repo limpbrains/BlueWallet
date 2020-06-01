@@ -1,10 +1,10 @@
 /* global jasmine, jest, beforeAll, afterAll, beforeEach, device */
 
-const detox = require('detox');
-const config = require('../../package.json').detox;
-const adapter = require('detox/runners/jest/adapter');
-const specReporter = require('detox/runners/jest/specReporter');
-const assignReporter = require('detox/runners/jest/assignReporter');
+import detox from 'detox';
+import { detox as config } from '../../package.json';
+import adapter from 'detox/runners/jest/adapter';
+import specReporter from 'detox/runners/jest/specReporter';
+import assignReporter from 'detox/runners/jest/assignReporter';
 
 jasmine.getEnv().addReporter(adapter);
 

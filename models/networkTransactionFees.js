@@ -1,4 +1,4 @@
-const BlueElectrum = require('../BlueElectrum');
+import BlueElectrum from '../BlueElectrum';
 
 export const NetworkTransactionFeeType = Object.freeze({
   FAST: 'Fast',

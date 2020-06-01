@@ -31,10 +31,10 @@ import { HDSegwitBech32Wallet, SegwitP2SHWallet, HDSegwitP2SHWallet, LightningCu
 
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { Icon } from 'react-native-elements';
-const EV = require('../../events');
-const A = require('../../analytics');
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import EV from '../../events';
+import A from '../../analytics';
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   loading: {

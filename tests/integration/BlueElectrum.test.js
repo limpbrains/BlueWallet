@@ -1,8 +1,11 @@
 /* global it, describe, afterAll, beforeAll, jasmine */
+import assert from 'assert';
+
 global.net = require('net');
 global.tls = require('tls');
-const BlueElectrum = require('../../BlueElectrum');
-const assert = require('assert');
+
+import BlueElectrum from '../../BlueElectrum';
+
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 150 * 1000;
 
 afterAll(() => {

@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 import { PlaceholderWallet, LightningCustodianWallet } from '../../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import WalletGradient from '../../class/wallet-gradient';
-const EV = require('../../events');
+import EV from '../../events';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc/');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc/';
 
 const styles = StyleSheet.create({
   loading: {

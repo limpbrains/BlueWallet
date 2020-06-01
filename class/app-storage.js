@@ -16,7 +16,7 @@ import {
 } from './';
 import WatchConnectivity from '../WatchConnectivity';
 import DeviceQuickActions from './quick-actions';
-const encryption = require('../encryption');
+import encryption from '../encryption';
 
 export class AppStorage {
   static FLAG_ENCRYPTED = 'data_encrypted';

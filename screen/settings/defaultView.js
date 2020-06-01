@@ -3,7 +3,7 @@ import { TouchableOpacity, View, TouchableWithoutFeedback, StyleSheet } from 're
 import { SafeBlueArea, BlueCard, BlueText, BlueNavigationStyle, BlueListItem } from '../../BlueComponents';
 import OnAppLaunch from '../../class/on-app-launch';
 import { useNavigation } from '@react-navigation/native';
-const BlueApp = require('../../BlueApp');
+import BlueApp from '../../BlueApp';
 
 const styles = StyleSheet.create({
   flex: {

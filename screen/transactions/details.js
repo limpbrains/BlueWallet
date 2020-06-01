@@ -14,9 +14,9 @@ import HandoffSettings from '../../class/handoff';
 import Handoff from 'react-native-handoff';
 import PropTypes from 'prop-types';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
-const dayjs = require('dayjs');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
+import dayjs from 'dayjs';
 
 const styles = StyleSheet.create({
   root: {

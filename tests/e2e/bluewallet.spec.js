@@ -1,8 +1,8 @@
 /* global it, describe, expect, element, by, waitFor, device, jasmine */
 
-const bitcoin = require('bitcoinjs-lib');
-const assert = require('assert');
-const createHash = require('create-hash');
+import * as bitcoin from 'bitcoinjs-lib';
+import assert from 'assert';
+import createHash from 'create-hash';
 
 jasmine.getEnv().addReporter({
   specStarted: result => (jasmine.currentTest = result),

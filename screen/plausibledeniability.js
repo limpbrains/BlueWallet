@@ -4,11 +4,11 @@ import { ScrollView, StyleSheet } from 'react-native';
 import { BlueLoading, BlueButton, SafeBlueArea, BlueCard, BlueText, BlueNavigationStyle, BlueSpacing20 } from '../BlueComponents';
 import PropTypes from 'prop-types';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
-import { AppStorage } from '../class';
-const BlueApp = require('../BlueApp');
-const prompt = require('../prompt');
-const EV = require('../events');
-const loc = require('../loc');
+
+import BlueApp from '../BlueApp';
+import prompt from '../prompt';
+import EV from '../events';
+import loc from '../loc';
 
 const styles = StyleSheet.create({
   root: {

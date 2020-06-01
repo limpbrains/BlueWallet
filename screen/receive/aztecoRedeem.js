@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { PlaceholderWallet } from '../../class';
 import Azteco from '../../class/azteco';
 
-const EV = require('../../events');
-const BlueApp = require('../../BlueApp');
+import EV from '../../events';
+import BlueApp from '../../BlueApp';
 
 const styles = StyleSheet.create({
   loading: {

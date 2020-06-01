@@ -1,8 +1,8 @@
 import { HDLegacyP2PKHWallet } from '..';
 
-const bitcoin = require('bitcoinjs-lib');
-const mn = require('electrum-mnemonic');
-const HDNode = require('bip32');
+import * as bitcoin from 'bitcoinjs-lib';
+import * as mn from 'electrum-mnemonic';
+import * as HDNode from 'bip32';
 
 const PREFIX = mn.PREFIXES.standard;
 const MNEMONIC_TO_SEED_OPTS = {

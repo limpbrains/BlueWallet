@@ -3,7 +3,8 @@
  * This module mimics the node crypto api and is intended to work in RN environment.
  */
 
-const { NativeModules } = require('react-native');
+import { NativeModules } from 'react-native';
+
 const { RNRandomBytes } = NativeModules;
 
 /**

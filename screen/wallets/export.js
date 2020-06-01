@@ -7,8 +7,9 @@ import Privacy from '../../Privacy';
 import Biometric from '../../class/biometrics';
 import { LegacyWallet, LightningCustodianWallet, SegwitBech32Wallet, SegwitP2SHWallet, WatchOnlyWallet } from '../../class';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
+
 const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({

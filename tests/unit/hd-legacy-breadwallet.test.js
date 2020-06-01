@@ -1,6 +1,7 @@
 /* global it */
+import assert from 'assert';
+
 import { HDLegacyBreadwalletWallet } from '../../class';
-const assert = require('assert');
 
 it('Legacy HD Breadwallet works', async () => {
   if (!process.env.HD_MNEMONIC_BREAD) {

@@ -1,6 +1,7 @@
 /* global describe, it */
+import assert from 'assert';
+
 import { HDSegwitElectrumSeedP2WPKHWallet } from '../../class';
-const assert = require('assert');
 
 describe('HDSegwitElectrumSeedP2WPKHWallet', () => {
   it('can import mnemonics and generate addresses and WIFs', async function () {

@@ -7,8 +7,8 @@ import ImagePicker from 'react-native-image-picker';
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
-const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
-const createHash = require('create-hash');
+import LocalQRCode from '@remobile/react-native-qrcode-local-image';
+import createHash from 'create-hash';
 
 const styles = StyleSheet.create({
   root: {

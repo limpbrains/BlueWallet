@@ -1,7 +1,7 @@
 /* global it */
-import { SegwitP2SHWallet, AppStorage } from '../../class';
 import AsyncStorage from '@react-native-community/async-storage';
-const assert = require('assert');
+import assert from 'assert';
+import { SegwitP2SHWallet, AppStorage } from '../../class';
 
 it('Appstorage - loadFromDisk works', async () => {
   /** @type {AppStorage} */

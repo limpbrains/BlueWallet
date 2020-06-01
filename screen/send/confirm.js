@@ -17,13 +17,13 @@ import {
   SegwitP2SHWallet,
   SegwitBech32Wallet,
 } from '../../class';
-const loc = require('../../loc');
-const EV = require('../../events');
-const currency = require('../../currency');
-const BlueElectrum = require('../../BlueElectrum');
-const Bignumber = require('bignumber.js');
+import loc from '../../loc';
+import EV from '../../events';
+import currency from '../../currency';
+import BlueElectrum from '../../BlueElectrum';
+import Bignumber from 'bignumber.js';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
+import BlueApp from '../../BlueApp';
 
 export default class Confirm extends Component {
   static navigationOptions = () => ({

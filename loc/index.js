@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { AppStorage } from '../class';
 import { BitcoinUnit } from '../models/bitcoinUnits';
 import relativeTime from 'dayjs/plugin/relativeTime';
-const dayjs = require('dayjs');
-const currency = require('../currency');
-const BigNumber = require('bignumber.js');
+import dayjs from 'dayjs';
+import currency from '../currency';
+import BigNumber from 'bignumber.js';
 dayjs.extend(relativeTime);
 
 // first-time loading sequence

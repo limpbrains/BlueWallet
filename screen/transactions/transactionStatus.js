@@ -19,8 +19,8 @@ import { Icon } from 'react-native-elements';
 import Handoff from 'react-native-handoff';
 import HandoffSettings from '../../class/handoff';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const buttonStatus = Object.freeze({
   possible: 1,

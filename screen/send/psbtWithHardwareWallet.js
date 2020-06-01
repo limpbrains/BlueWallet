@@ -32,12 +32,13 @@ import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { RNCamera } from 'react-native-camera';
 import RNFS from 'react-native-fs';
 import DocumentPicker from 'react-native-document-picker';
-const loc = require('../../loc');
-const EV = require('../../events');
-const BlueElectrum = require('../../BlueElectrum');
+import bitcoin from 'bitcoinjs-lib';
+import loc from '../../loc';
+import EV from '../../events';
+import BlueElectrum from '../../BlueElectrum';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const bitcoin = require('bitcoinjs-lib');
+import BlueApp from '../../BlueApp';
+
 const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({

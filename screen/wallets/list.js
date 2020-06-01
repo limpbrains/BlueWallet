@@ -22,12 +22,12 @@ import { PlaceholderWallet } from '../../class';
 import WalletImport from '../../class/wallet-import';
 import ActionSheet from '../ActionSheet';
 import ImagePicker from 'react-native-image-picker';
-const EV = require('../../events');
-const A = require('../../analytics');
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
-const BlueElectrum = require('../../BlueElectrum');
-const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
+import EV from '../../events';
+import A from '../../analytics';
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
+import BlueElectrum from '../../BlueElectrum';
+import LocalQRCode from '@remobile/react-native-qrcode-local-image';
 
 const WalletsListSections = { CAROUSEL: 'CAROUSEL', LOCALTRADER: 'LOCALTRADER', TRANSACTIONS: 'TRANSACTIONS' };
 

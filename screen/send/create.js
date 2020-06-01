@@ -23,9 +23,9 @@ import { Icon } from 'react-native-elements';
 import Share from 'react-native-share';
 import RNFS from 'react-native-fs';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
-const currency = require('../../currency');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
+import currency from '../../currency';
 
 export default class SendCreate extends Component {
   static navigationOptions = ({ navigation, route }) => {

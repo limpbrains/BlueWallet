@@ -1,6 +1,6 @@
 /* global it, describe */
-const assert = require('assert');
-const fs = require('fs');
+import assert from 'assert';
+import fs from 'fs';
 
 describe('Localization', () => {
   it('has all keys in all locales', async () => {

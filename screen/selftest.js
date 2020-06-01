@@ -3,10 +3,10 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import { BlueLoading, BlueSpacing20, SafeBlueArea, BlueCard, BlueText, BlueNavigationStyle } from '../BlueComponents';
 import PropTypes from 'prop-types';
 import { SegwitP2SHWallet, LegacyWallet, HDSegwitP2SHWallet, HDSegwitBech32Wallet } from '../class';
-const bitcoin = require('bitcoinjs-lib');
-const BlueCrypto = require('react-native-blue-crypto');
-const encryption = require('../encryption');
-const BlueElectrum = require('../BlueElectrum');
+import bitcoin from 'bitcoinjs-lib';
+import BlueCrypto from 'react-native-blue-crypto';
+import encryption from '../encryption';
+import BlueElectrum from '../BlueElectrum';
 
 const styles = StyleSheet.create({
   root: {

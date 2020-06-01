@@ -41,12 +41,12 @@ import { BitcoinTransaction } from '../../models/bitcoinTransactionInfo';
 import DocumentPicker from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import DeeplinkSchemaMatch from '../../class/deeplink-schema-match';
-const bitcoin = require('bitcoinjs-lib');
-const BigNumber = require('bignumber.js');
-const { width } = Dimensions.get('window');
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import bitcoin from 'bitcoinjs-lib';
+import BigNumber from 'bignumber.js';
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
+const { width } = Dimensions.get('window');
 const btcAddressRx = /^[a-zA-Z0-9]{26,35}$/;
 
 const styles = StyleSheet.create({

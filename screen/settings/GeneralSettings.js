@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import HandoffSettings from '../../class/handoff';
 
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   root: {

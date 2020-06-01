@@ -14,7 +14,7 @@ import {
   BlueBigCheckmark,
 } from '../../BlueComponents';
 import BlueElectrum from '../../BlueElectrum';
-const bitcoin = require('bitcoinjs-lib');
+import bitcoin from 'bitcoinjs-lib';
 
 const BROADCAST_RESULT = Object.freeze({
   none: 'Input transaction hash',

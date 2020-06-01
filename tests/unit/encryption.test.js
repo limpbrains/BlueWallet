@@ -1,6 +1,6 @@
 /* global describe, it */
-const assert = require('assert');
-const c = require('../../encryption');
+import assert from 'assert';
+import c from '../../encryption';
 
 describe('unit - encryption', function () {
   it('encrypts and decrypts', function () {

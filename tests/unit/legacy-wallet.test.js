@@ -1,7 +1,8 @@
 /* global it, describe */
+import * as bitcoin from 'bitcoinjs-lib';
+import assert from 'assert';
+
 import { LegacyWallet } from '../../class';
-const bitcoin = require('bitcoinjs-lib');
-const assert = require('assert');
 
 describe('Legacy wallet', () => {
   it('can create transaction', async () => {

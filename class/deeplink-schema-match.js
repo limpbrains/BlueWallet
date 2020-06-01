@@ -5,9 +5,9 @@ import RNFS from 'react-native-fs';
 import url from 'url';
 import { Chain } from '../models/bitcoinUnits';
 import Azteco from './azteco';
-const bitcoin = require('bitcoinjs-lib');
-const bip21 = require('bip21');
-const BlueApp = require('../BlueApp');
+import * as bitcoin from 'bitcoinjs-lib';
+import bip21 from 'bip21';
+import BlueApp from '../BlueApp';
 
 class DeeplinkSchemaMatch {
   static hasSchema(schemaString) {

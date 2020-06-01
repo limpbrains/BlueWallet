@@ -18,9 +18,9 @@ import { Icon } from 'react-native-elements';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import Biometric from '../../class/biometrics';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const EV = require('../../events');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import EV from '../../events';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   walletSelectRoot: {

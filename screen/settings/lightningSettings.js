@@ -8,8 +8,8 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import { LightningCustodianWallet } from '../../class/wallets/lightning-custodian-wallet';
 /** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
-const loc = require('../../loc');
+import BlueApp from '../../BlueApp';
+import loc from '../../loc';
 
 const styles = StyleSheet.create({
   root: {

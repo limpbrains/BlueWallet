@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-const BlueApp = require('../BlueApp');
+import BlueApp from '../BlueApp';
 
 export default class HandoffSettings {
   static STORAGEKEY = 'HandOff';

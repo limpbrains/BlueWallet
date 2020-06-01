@@ -1,9 +1,9 @@
 /* global it, jasmine, describe */
+import * as bitcoin from 'bitcoinjs-lib';
+import assert from 'assert';
+
 import { LegacyWallet, SegwitBech32Wallet, SegwitP2SHWallet } from '../../class';
 import { HodlHodlApi } from '../../class/hodl-hodl-api';
-
-const bitcoin = require('bitcoinjs-lib');
-const assert = require('assert');
 
 it('can create escrow address', () => {
   const keyPairServer = bitcoin.ECPair.fromPrivateKey(

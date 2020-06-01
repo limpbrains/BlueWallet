@@ -20,7 +20,7 @@ import PropTypes from 'prop-types';
 import { HodlHodlApi } from '../../class/hodl-hodl-api';
 import Modal from 'react-native-modal';
 import { Icon } from 'react-native-elements';
-const A = require('../../analytics');
+import A from '../../analytics';
 
 const CURRENCY_CODE_ANY = '_any';
 const METHOD_ANY = '_any';

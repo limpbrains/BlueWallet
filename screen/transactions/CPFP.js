@@ -16,12 +16,12 @@ import PropTypes from 'prop-types';
 import { HDSegwitBech32Transaction, HDSegwitBech32Wallet } from '../../class';
 import { Text } from 'react-native-elements';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+
+import EV from '../../events';
+import BlueElectrum from '../../BlueElectrum';
+import loc from '../../loc';
 /** @type {AppStorage} */
-const EV = require('../../events');
-const BlueElectrum = require('../../BlueElectrum');
-const loc = require('../../loc');
-/** @type {AppStorage} */
-const BlueApp = require('../../BlueApp');
+import BlueApp from '../../BlueApp';
 
 const styles = StyleSheet.create({
   root: {

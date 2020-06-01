@@ -4,8 +4,9 @@ import { View, Dimensions, StyleSheet } from 'react-native';
 import { SafeBlueArea, BlueSpacing20, BlueCopyTextToClipboard, BlueButton, BlueCard, BlueTextCentered } from '../../BlueComponents';
 import QRCode from 'react-native-qrcode-svg';
 import { ScrollView } from 'react-native-gesture-handler';
+import BlueApp from '../../BlueApp';
+
 const { height, width } = Dimensions.get('window');
-const BlueApp = require('../../BlueApp');
 
 const styles = StyleSheet.create({
   root: {
